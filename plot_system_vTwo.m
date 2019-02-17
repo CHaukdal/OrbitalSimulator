@@ -1,6 +1,6 @@
 function plot_system_vTwo(y, t, plotSettings, bodyRadii, plotColors, tVec, filePath)
 %% function plot_system(y, t, nBodies, plotStep, bodyRadii, scaleBodies, plotColors, tVec, savePlot, filePath)    
-% Version 1.2.1 
+% Version 1.2.2 
 % 
 % Produces and saves visual plot of body orbits and trajectories and animates plot
 %
@@ -55,9 +55,12 @@ if ~iscell(plotColors)
         plotColors{iter} = [0,0,0];
     end
 end
+
+% Display plot check
 if dispPlot == 0
    set(0,'DefaultFigureVisible','off'); 
 end
+
 % Plotting body trajectories
 for iter = 1:nBodies-1 % doesnt plot sun
     % Body position minus moving sun position for stability
@@ -90,7 +93,7 @@ if aniPlot == 1
     elseif scaleBodies == 0
         sz = bodyRadii*2;
     else
-        sz=log(bodyRadii*2./.00001);
+        sz=log(bodyRadii*2./.00001); 
     end
 
     % Animating body positions
@@ -106,9 +109,11 @@ if aniPlot == 1
     end
 end
 
-    % Closing message box
-if ishandle(saveStatus)
-    delete(saveStatus)
+%     Closing message box
+if savePlot == 1
+    if ishandle(saveStatus)
+        delete(saveStatus)
+    end
 end
 
 % Re-setting plot default setting in matlab to visible
