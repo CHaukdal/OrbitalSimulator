@@ -56,8 +56,6 @@ velCoeff = errVec(3);
 infoSize = size(bodyInfo);
 numBodies = infoSize(1);
 
-nBodies = numBodies; % Globals are annoying but necessary
-
 incBodies = selBodies; % Globals are annoying but necessary
 
 % Time in seconds rather than fractional steps

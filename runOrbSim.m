@@ -12,7 +12,7 @@
 % INSTRUCTIONS:
 % 1. Read descriptions and edit information as needed in sections 
 %    "Information Cell Array for Selected Bodies", "Run Options", 
-%    "Advanced Run Options", "Plot Options", and "Analysis Options"
+%    "Advanced Run Options", and "Plot Options"
 % 2. Click Run
 % 
 % IMPORTANT OUTPUTS:
@@ -73,9 +73,9 @@ close all
 % additional time
 
 % Change these [earth years]
-iniTime = 10;
+iniTime = 0;
 tStep = .01; 
-simLength = 20; 
+simLength = 300; 
 
 % Leave these be
 simTime = simLength+iniTime;
@@ -124,23 +124,23 @@ bodyInfo = {1.9885e30, 'Sun', 0,...
 % Settings for system solver
 
 % For convenience (do not change):
-infoSize = size(bodyInfo);
-allBodies = infoSize(1);
+nBodies = size(bodyInfo,1);
 
 % Choose which bodies will exert gravitational influence in sim:
 % For example, sun only would be selBodies = 1; (This saves time but is
 % less accurate and not accurate if satellites of a planet are simulated)
 % This simulates all bodies:
-selVec = 1:allBodies;
+selVec = 1:nBodies;
 
-% Do you want to save t (time step vector) and y (corresponding positions 
-% and velocities) to text files? If so, saveData = 1, if not, saveData = 0.
+% Do you want to save t (time step vector), y (corresponding positions and
+% velocities), and bodyInfo to text files? If so, saveData = 1, if not, saveData = 0.
 % If saveData = 1, choose dataNameY, dataNameT, and dataLocation as seen 
 % below. If saveData = 0, dataNameY, dataNameT, and dataLocation will be ignored.
 saveData = 1;
 % saveData = 0;
 dataNameY = 'exampleNameY';
 dataNameT = 'exampleNameT';
+dataNameB = 'exampleNameBodyInfo';
 dataLocation = 'C:\test'; 
 
 %% Advanced Run Options (can be left alone):
@@ -183,8 +183,8 @@ dispPlot = 1;
 
 % Do you want to animate the plot generated? If so, aniPlot = 1, if
 % not, aniPlot = 0
-aniPlot = 1;
-% aniPlot = 0;
+% aniPlot = 1;
+aniPlot = 0;
 
 % Ratio of time steps per plot point (increase to speed up animation)
 plotStep = 10;
@@ -218,31 +218,27 @@ plotColors = {[.31, .31, .31], [.4, .35, .25], [0, .20, .7],...
 % plotColors = 0;
 
 % Conglomerated plot settings (do not chage):
-plotSettings = [allBodies dispPlot aniPlot plotStep scaleBodies savePlot];
-
-%% Analysis Options
-% Settings for post-processing tool
-
-
-
-
+plotSettings = [nBodies dispPlot aniPlot plotStep scaleBodies savePlot];
 
 %% Running Solver
 
 errVec = [relErrTol posCoeff velCoeff];
 [t, y] = solveOrbSim(bodyInfo, selVec, tVec, errVec); 
 
-
 %% Plotting and Saving if Desired
+
+if saveData == 1
+    SavePathY = strcat(dataLocation, '\', dataNameY, '.txt');
+    SavePathT = strcat(dataLocation, '\', dataNameT, '.txt');
+%     SavePathB = strcat(dataLocation, '\', dataNameB, '.mat')
+    dlmwrite(SavePathY, y)
+    dlmwrite(SavePathT, t)
+%     save(SavePathB, bodyInfo, 'c')
+end
 
 if plotOn == 1
     filePath = strcat(fileLocation, '\', fileName);
     plotOrbSim(y, t, plotSettings, bodyRadii, plotColors, tVec, filePath)
 end
 
-if saveData == 1
-    SavePathY = strcat(dataLocation, '\', dataNameY, '.txt');
-    SavePathT = strcat(dataLocation, '\', dataNameT, '.txt');
-    dlmwrite(SavePathY, y)
-    dlmwrite(SavePathT, t)
-end
+

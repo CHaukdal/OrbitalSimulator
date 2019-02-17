@@ -1,5 +1,5 @@
 function plotOrbSim(y, t, plotSettings, bodyRadii, plotColors, tVec, filePath)
-%% function plot_system(y, t, nBodies, plotStep, bodyRadii, scaleBodies, plotColors, tVec, savePlot, filePath)    
+%% function plot_system(y, t, plotSettings, bodyRadii, plotColors, tVec, filePath)
 % Version 1.1.1 
 % 
 % Produces and saves visual plot of body orbits and trajectories and animates plot
@@ -48,7 +48,8 @@ savePlot = plotSettings(6);
 %% Plotting and Saving
 
 % Designed for 1080p display, alter position vector for other screen resolutions 
-f = figure('Name', 'Simulation Results', 'NumberTitle', 'off', 'renderer', 'openGL', 'position', [1920/4 1080/4 1920/2 1080/2]);
+f = figure('Name', 'Simulation Results', 'NumberTitle', 'off', 'renderer',...
+    'openGL', 'position', [1920/4 1080/4 1920/2 1080/2]);
 if ~iscell(plotColors)
     plotColors = cell(1,nBodies);
     for iter = 1:nBodies
